@@ -1,0 +1,7 @@
+Flask
+python-dotenv
+opencv-python
+yt-dlp
+transformers
+torch
+Pillow

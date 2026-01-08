@@ -205,3 +205,24 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# --- PixelProof Spesifikt ---
+
+# Ignorer databasen (vi vil ikke overskrive produksjonsdata med testdata)
+*.db
+database/*.db
+
+# Ignorer nedlastede videoer og midlertidige filer
+downloads/
+static/processed_faces/
+
+# Ignorer AI-modeller som lastes ned automatisk (sparer plass på GitHub)
+*.caffemodel
+*.prototxt
+core/*.caffemodel
+core/*.prototxt
+
+# Ignorer systemfiler
+__pycache__/
+*.pyc
+.DS_Store

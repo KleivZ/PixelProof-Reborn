@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PixelProof-Reborn</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f4f8; display: flex; justify-content: center; padding-top: 50px; }
+        .container { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); width: 100%; max-width: 700px; text-align: center; }
+        h1 { color: #007788; }
+        input[type="text"] { width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        button { background: #007788; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; transition: 0.3s; }
+        button:hover { background: #005a66; }
+        .flash { padding: 15px; margin: 15px 0; border-radius: 8px; font-weight: bold; }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        .warning { background: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; margin-top: 20px; }
+        .face-card { border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); background: #fff; }
+        .face-card img { width: 100%; height: auto; display: block; }
+        .score-badge { padding: 8px; font-size: 0.9rem; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PixelProof 🛡️</h1>
+        <p>AI-drevet Deepfake Deteksjon (ViT)</p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+            <input type="text" name="url" placeholder="Lim inn YouTube-URL..." required>
+            <button type="submit">Start Analyse</button>
+        </form>
+
+        {% if faces %}
+            <h3 style="color: #333; margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px;">Resultatdetaljer</h3>
+            <div class="grid">
+                {% for item in faces %}
+                    <div class="face-card">
+                        <img src="{{ url_for('static', filename='processed_faces/' + item.file) }}">
+                        
+                        <div class="score-badge" 
+                             style="background-color: {{ '#ffebee' if item.score > 50 else '#e8f5e9' }};
+                                    color: {{ '#c62828' if item.score > 50 else '#2e7d32' }};">
+                            {% if item.score > 50 %}
+                                ⚠️ {{ item.score }}% FAKE
+                            {% else %}
+                                ✅ {{ item.score }}% FAKE
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
